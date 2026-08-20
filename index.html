@@ -486,7 +486,7 @@ out body meta;`;
             'Accept': 'application/json'
           },
           body: 'data=' + encodeURIComponent(q)
-        }, 15000, 'overpass-network');
+        }, 30000, 'overpass-network');
         if(!res.ok){
           lastErr = new Error('overpass-failed');
           console.warn('[groundtruth] overpass mirror returned', res.status, mirror);
