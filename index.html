@@ -462,7 +462,6 @@
     const q = `[out:json][timeout:25];
 (
   node["surveillance:type"="ALPR"](around:${radiusMeters},${lat},${lon});
-  node["man_made"="surveillance"]["surveillance:type"="ALPR"](around:${radiusMeters},${lat},${lon});
   node(around:${radiusMeters},${lat},${lon})["operator"~"Flock",i];
   node(around:${radiusMeters},${lat},${lon})["brand"~"Flock",i];
 );
@@ -471,11 +470,15 @@ out body meta;`;
     // frequently overloaded, rate-limited, or briefly unreachable from some
     // networks. Try a short list of independently-run mirrors in order and
     // only report failure if all of them fail.
+    // Note: overpass.kumi.systems and overpass.private.coffee are now the
+    // same underlying service (Kumi Systems handed it off to Private.coffee),
+    // so they are NOT independent fallbacks — kept both only in case one
+    // hostname is blocked on a given network while the other isn't.
     const mirrors = [
       'https://overpass-api.de/api/interpreter',
-      'https://overpass.kumi.systems/api/interpreter',
       'https://overpass.private.coffee/api/interpreter',
-      'https://postpass.geofabrik.de/api/interpreter'
+      'https://overpass.kumi.systems/api/interpreter',
+      'https://maps.mail.ru/osm/tools/overpass/api/interpreter'
     ];
     let lastErr = null;
     for(const mirror of mirrors){
